@@ -17,4 +17,4 @@ This project is currently in the **implementation stage**. Features are being de
 Currently, Taskex is **not accepting contributions**. Stay tuned for updates regarding contribution opportunities in the future!  
 
 ## 📄 License  
-This project is licensed under [Insert your preferred license here, if any].  
+This project is licensed under **callmekvj**.  
