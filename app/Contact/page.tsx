@@ -1,12 +1,12 @@
 import React from 'react'
-import Hero from '../_components/Hero'
+import HeroContact from '../_components/HeroContact'
 import Navbar from '../_components/Navbar'
 
 function page() {
   return (
     <div>
         <Navbar/>
-      <Hero/>
+      <HeroContact/>
       
     </div>
   )

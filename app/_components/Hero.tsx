@@ -23,7 +23,7 @@ const Hero: React.FC = () => {
 
         <a
           className="block w-full rounded border border-white-600 px-12 py-3 text-sm font-medium text-[#ede8f5] hover:bg-[#ede8f5]  hover:text-[#3d52a0] focus:outline-none focus:ring active:bg-blue-500 sm:w-auto"
-          href="#"
+          href="/Dashboard"
         >
           Learn More
         </a>

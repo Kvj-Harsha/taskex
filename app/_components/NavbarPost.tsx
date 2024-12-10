@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Navbar() {
+function NavbarPost() {
   return (
     <div>
       <header className="bg-white dark:bg-[#ede8f5] text-[#3d52a0]">
@@ -25,9 +25,9 @@ function Navbar() {
           <li>
               <a
                 className="text-[#3d52a0] transition hover:text-[#3d52a0]/75 dark:text-[#3d52a09] dark:hover:text-white/75"
-                href="/"
+                href="/Dashboard"
               >
-                Home
+                Dashboard
               </a>
             </li>
             
@@ -64,17 +64,17 @@ function Navbar() {
           <div className="sm:flex sm:gap-4">
             <a
               className="rounded-md bg-[#3d52a0] px-5 py-2.5 text-sm font-medium text-white shadow dark:hover:bg-[#3d52a0]"
-              href="/sign-in"
+              href="/Profile"
             >
-              Login
+              Profile
             </a>
 
             <div className="hidden sm:flex">
               <a
                 className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-[#3d52a0] dark:bg-gray-100 dark:text-[#3d52a09] dark:hover:text-white/75 dark:hover:bg-[#3d52a0]"
-                href="/sign-up"
+                href="/Logout"
               >
-                Register
+                Log Out
               </a>
             </div>
           </div>
@@ -104,4 +104,4 @@ function Navbar() {
   )
 }
 
-export default Navbar
+export default NavbarPost
