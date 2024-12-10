@@ -196,19 +196,19 @@ function Footer() {
       <div className="sm:flex sm:items-center sm:justify-between">
         <ul className="flex flex-wrap gap-4 text-xs">
           <li>
-            <a href="#" className="text-gray-500 transition hover:opacity-75 dark:text-[#3d52a0]">]">
+            <a href="#" className="text-gray-500 transition hover:opacity-75 dark:text-[#3d52a0]">
               Terms & Conditions
             </a>
           </li>
 
           <li>
-            <a href="#" className="text-gray-500 transition hover:opacity-75 dark:text-[#3d52a0]">]">
+            <a href="#" className="text-gray-500 transition hover:opacity-75 dark:text-[#3d52a0]">
               Privacy Policy
             </a>
           </li>
 
           <li>
-            <a href="#" className="text-gray-500 transition hover:opacity-75 dark:text-[#3d52a0]">]">
+            <a href="#" className="text-gray-500 transition hover:opacity-75 dark:text-[#3d52a0]">
               Cookies
             </a>
           </li>
