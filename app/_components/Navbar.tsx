@@ -1,6 +1,9 @@
-import React from 'react'
+"use client";
+import React from 'react';
+import { useRouter } from "next/navigation";
 
 function Navbar() {
+  const router = useRouter();
   return (
     <div>
       <header className="bg-white dark:bg-[#ede8f5] text-[#3d52a0]">
@@ -26,7 +29,7 @@ function Navbar() {
               <a
                 className="text-[#3d52a0] transition hover:text-[#3d52a0]/75 dark:text-[#3d52a09] dark:hover:text-white/75"
                 href="/"
-              >
+                >
                 Home
               </a>
             </li>
@@ -35,7 +38,7 @@ function Navbar() {
               <a
                 className="text-[#3d52a0] transition hover:text-[#3d52a0]/75 dark:text-[#3d52a09] dark:hover:text-white/75"
                 href="/About"
-              >
+                >
                 About
               </a>
             </li>
@@ -44,7 +47,7 @@ function Navbar() {
               <a
                 className="text-[#3d52a0] transition hover:text-[#3d52a0]/75 dark:text-[#3d52a09] dark:hover:text-white/75"
                 href="https://github.com/Kvj-Harsha/taskex"
-              >
+                >
                 GitHub
               </a>
             </li>
@@ -53,7 +56,7 @@ function Navbar() {
               <a
                 className="text-[#3d52a0] transition hover:text-[#3d52a0]/75 dark:text-[#3d52a09] dark:hover:text-white/75"
                 href="/Contact"
-              >
+                >
                 Contact
               </a>
             </li>
@@ -62,20 +65,23 @@ function Navbar() {
 
         <div className="flex items-center gap-4">
           <div className="sm:flex sm:gap-4">
+            <button onClick={() => router.push("/Dashboard")}>
             <a
               className="rounded-md bg-[#3d52a0] px-5 py-2.5 text-sm font-medium text-white shadow dark:hover:bg-[#3d52a0]"
-              href="/sign-in"
-            >
+              >
               Login
             </a>
+              </button>
 
             <div className="hidden sm:flex">
+            <button onClick={() => router.push("/sign-up")}>
               <a
                 className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-[#3d52a0] dark:bg-gray-100 dark:text-[#3d52a09] dark:hover:text-white/75 dark:hover:bg-[#3d52a0]"
-                href="/sign-up"
+                // href="/sign-up"
               >
                 Register
               </a>
+              </button>
             </div>
           </div>
 

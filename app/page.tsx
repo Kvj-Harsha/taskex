@@ -1,14 +1,16 @@
-import React from 'react'
+"use client";
+import Hero from './_components/Hero';
 import Navbar from './_components/Navbar'
-import Hero from './_components/Hero'
+import { useRouter } from "next/navigation";
 
-function page() {
+export default function Home() {
+  const router = useRouter();
+
   return (
     <div>
-      <Navbar/>
+          <Navbar/>
+
       <Hero/>
     </div>
-  )
+  );
 }
-
-export default page
