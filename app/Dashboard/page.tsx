@@ -23,7 +23,8 @@ export default function Dashboard() {
     fetchNotes();
   }, []);
 
-  const handleSubmit = async (e) => {
+  // Add type for event
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!name || !note) {
@@ -70,13 +71,13 @@ export default function Dashboard() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Enter Name"
-              className=" text-black w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3d52a0] mb-4"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3d52a0] mb-4"
             />
             <textarea
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="Enter Note"
-              className="text-black w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3d52a0]"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#3d52a0]"
             />
           </div>
           <button
