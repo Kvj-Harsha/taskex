@@ -2,10 +2,17 @@
 
 import { useState, useEffect } from "react";
 
+// Define a Note type
+type Note = {
+  _id: string;
+  name: string;
+  note: string;
+};
+
 export default function Dashboard() {
   const [name, setName] = useState("");
   const [note, setNote] = useState("");
-  const [notes, setNotes] = useState([]);
+  const [notes, setNotes] = useState<Note[]>([]); // Explicitly typing the notes state
   const [error, setError] = useState("");
 
   // Fetch all notes when the component mounts
