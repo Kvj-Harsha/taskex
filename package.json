@@ -1,6 +1,7 @@
 {
   "name": "taskex",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,13 +10,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "date-fns": "^4.1.0",
     "firebase": "^11.1.0",
     "firebase-admin": "^13.0.1",
     "framer-motion": "^11.15.0",
     "mongodb": "^6.12.0",
+    "mongoose": "^8.9.2",
     "motion": "^11.15.0",
     "next": "15.0.4",
+    "node": "^23.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
@@ -27,6 +33,7 @@
     "@types/react-dom": "^19",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }

@@ -45,13 +45,12 @@ export default function Dashboard() {
                   {task.title}
                 </h3>
                 <p
-                  className={`mt-2 text-sm ${
-                    task.status === "Completed"
+                  className={`mt-2 text-sm ${task.status === "Completed"
                       ? "text-green-500"
                       : task.status === "In Progress"
-                      ? "text-yellow-500"
-                      : "text-red-500"
-                  }`}
+                        ? "text-yellow-500"
+                        : "text-red-500"
+                    }`}
                 >
                   {task.status}
                 </p>
