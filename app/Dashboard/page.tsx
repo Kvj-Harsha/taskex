@@ -75,10 +75,13 @@ export default function Dashboard() {
       });
       setError("");
     } catch (err) {
-      setError(err.message);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
     }
   };
-
   const handleDelete = async (id: string) => {
     try {
       const res = await fetch("/api/task", {
@@ -91,10 +94,13 @@ export default function Dashboard() {
 
       setTasks((prev) => prev.filter((task) => task._id !== id));
     } catch (err) {
-      setError(err.message);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unknown error occurred');
+      }
     }
   };
-
   const handleLogout = () => {
     router.push("/sign-in");
   };
