@@ -1,4 +1,3 @@
-// This is the main server-side logic for task management. Update this if any fields or logic changes.
 import connectToDatabase from "@/lib/mongodb";
 import Task from "@/models/Task";
 
@@ -45,14 +44,18 @@ export async function POST(req) {
 export async function DELETE(req) {
   try {
     const body = await req.json();
-    const { id } = body;
+    const { taskId } = body;
 
-    if (!id) {
+    if (!taskId) {
       return new Response(JSON.stringify({ error: "Task ID is required" }), { status: 400 });
     }
 
     await connectToDatabase();
-    await Task.findByIdAndDelete(id);
+    const deletedTask = await Task.findOneAndDelete({ taskId });
+
+    if (!deletedTask) {
+      return new Response(JSON.stringify({ error: "Task not found" }), { status: 404 });
+    }
 
     return new Response(JSON.stringify({ success: true }), { status: 200 });
   } catch (error) {

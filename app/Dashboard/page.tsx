@@ -4,9 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import PrivateRoute from "../_components/PrivateRoute";
 
-// Define a Task type
 type Task = {
-  _id: string;
+  taskId: string;
   title: string;
   description: string;
   status: string;
@@ -31,7 +30,6 @@ export default function Dashboard() {
   });
   const [error, setError] = useState("");
 
-  // Fetch all tasks
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -40,14 +38,8 @@ export default function Dashboard() {
         if (data.error) throw new Error(data.error);
         setTasks(data);
       } catch (err) {
-
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError('An unknown error occurred');
-        }
+        setError(err instanceof Error ? err.message : "An unknown error occurred");
       }
-
     };
     fetchTasks();
   }, []);
@@ -75,32 +67,26 @@ export default function Dashboard() {
       });
       setError("");
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('An unknown error occurred');
-      }
+      setError(err instanceof Error ? err.message : "An unknown error occurred");
     }
   };
-  const handleDelete = async (id: string) => {
+
+  const handleDelete = async (taskId: string) => {
     try {
       const res = await fetch("/api/task", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify({ taskId }),
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error);
 
-      setTasks((prev) => prev.filter((task) => task._id !== id));
+      setTasks((prev) => prev.filter((task) => task.taskId !== taskId));
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError('An unknown error occurred');
-      }
+      setError(err instanceof Error ? err.message : "An unknown error occurred");
     }
   };
+
   const handleLogout = () => {
     router.push("/sign-in");
   };
@@ -110,17 +96,13 @@ export default function Dashboard() {
       <div className="min-h-screen bg-gray-100 flex flex-col">
         <header className="bg-blue-600 text-white py-4 px-6 flex justify-between items-center shadow-md">
           <h1 className="text-2xl font-semibold">Task Dashboard</h1>
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 px-4 py-2 rounded text-white"
-          >
+          <button onClick={handleLogout} className="bg-red-500 px-4 py-2 rounded text-white">
             Logout
           </button>
         </header>
 
         <main className="flex-grow flex flex-col items-center py-10">
           <h2 className="text-3xl text-black font-bold mb-6">Manage Tasks</h2>
-
           {error && <p className="text-red-500 mb-4">{error}</p>}
 
           <form
@@ -204,19 +186,12 @@ export default function Dashboard() {
             <h3 className="text-2xl text-black font-semibold mb-4">Task List</h3>
             <ul className="grid gap-4">
               {tasks.map((task) => (
-                <li
-                  key={task._id}
-                  className="p-4 bg-white text-black shadow rounded border"
-                >
-                  <h4 className="text-lg text-black font-semibold">
-                    {task.title}
-                  </h4>
+                <li key={task.taskId} className="p-4 bg-white text-black shadow rounded border">
+                  <h4 className="text-lg text-black font-semibold">{task.title}</h4>
                   <p>{task.description}</p>
-                  <p className="text-sm text-gray-600">
-                    Priority: {task.priority}
-                  </p>
+                  <p className="text-sm text-gray-600">Priority: {task.priority}</p>
                   <button
-                    onClick={() => handleDelete(task._id)}
+                    onClick={() => handleDelete(task.taskId)}
                     className="bg-red-500 px-2 py-1 rounded text-white mt-2"
                   >
                     Delete
