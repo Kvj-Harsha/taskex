@@ -1,10 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { auth, firebaseAuth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import PrivateRoute from "../_components/PrivateRoute";
 import { FaTrashAlt } from "react-icons/fa";
-import { AiOutlineCalendar, AiOutlineUser, AiOutlineTag } from "react-icons/ai";
+import { AiOutlineCalendar, AiOutlineUser } from "react-icons/ai";
 import { MdCode, MdBrush, MdBugReport, MdCampaign, MdMoreHoriz } from "react-icons/md";
 
 
@@ -92,17 +93,17 @@ export default function Dashboard() {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await firebaseAuth.signOut(auth);
     router.push("/sign-in");
   };
-
  
   return (
     <PrivateRoute>
       <div className="min-h-screen bg-gray-100 flex flex-col">
         <header className="bg-blue-600 text-white py-4 px-6 flex justify-between items-center shadow-md">
           <h1 className="text-2xl font-semibold">Task Dashboard</h1>
-          <button onClick={handleLogout} className="bg-red-500 px-4 py-2 rounded text-white">
+          <button onClick={handleLogout} className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-white transition duration-200">
             Logout
           </button>
         </header>
