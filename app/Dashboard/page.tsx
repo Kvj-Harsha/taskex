@@ -3,6 +3,11 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import PrivateRoute from "../_components/PrivateRoute";
+import { FaTrashAlt } from "react-icons/fa";
+import { AiOutlineCalendar, AiOutlineUser, AiOutlineTag } from "react-icons/ai";
+import { MdCode, MdBrush, MdBugReport, MdCampaign, MdMoreHoriz } from "react-icons/md";
+
+
 
 type Task = {
   taskId: string;
@@ -91,6 +96,7 @@ export default function Dashboard() {
     router.push("/sign-in");
   };
 
+ 
   return (
     <PrivateRoute>
       <div className="min-h-screen bg-gray-100 flex flex-col">
@@ -182,24 +188,99 @@ export default function Dashboard() {
             </button>
           </form>
 
-          <section className="w-full max-w-4xl">
-            <h3 className="text-2xl text-black font-semibold mb-4">Task List</h3>
-            <ul className="grid gap-4">
-              {tasks.map((task) => (
-                <li key={task.taskId} className="p-4 bg-white text-black shadow rounded border">
-                  <h4 className="text-lg text-black font-semibold">{task.title}</h4>
-                  <p>{task.description}</p>
-                  <p className="text-sm text-gray-600">Priority: {task.priority}</p>
-                  <button
-                    onClick={() => handleDelete(task.taskId)}
-                    className="bg-red-500 px-2 py-1 rounded text-white mt-2"
+
+          <section className="w-full max-w-6xl mx-auto p-4">
+            <h3 className="text-3xl text-gray-900 font-extrabold mb-8 tracking-tight">
+              Task List
+            </h3>
+            <ul className="grid sm:grid-cols-1 lg:grid-cols-2 gap-6">
+              {tasks.map((task) => {
+                // Define category-based styles and icons
+                const categoryData = {
+                  Development: {
+                    style: "bg-blue-100 text-blue-600",
+                    icon: <MdCode className="text-blue-600" />,
+                  },
+                  Design: {
+                    style: "bg-pink-100 text-pink-600",
+                    icon: <MdBrush className="text-pink-600" />,
+                  },
+                  Testing: {
+                    style: "bg-yellow-100 text-yellow-600",
+                    icon: <MdBugReport className="text-yellow-600" />,
+                  },
+                  Marketing: {
+                    style: "bg-green-100 text-green-600",
+                    icon: <MdCampaign className="text-green-600" />,
+                  },
+                  Other: {
+                    style: "bg-gray-100 text-gray-600",
+                    icon: <MdMoreHoriz className="text-gray-600" />,
+                  },
+                };
+
+                const { style, icon } = categoryData[task.category] || categoryData.Other;
+
+                return (
+                  <li
+                    key={task.taskId}
+                    className="p-6 bg-gradient-to-r from-white to-gray-50 shadow-md rounded-xl border border-gray-200 hover:shadow-lg transition-transform transform hover:scale-105"
                   >
-                    Delete
-                  </button>
-                </li>
-              ))}
+                    <div className="flex justify-between items-start mb-5">
+                    <h4 className="text-xl font-bold text-gray-700 flex items-center gap-3">
+                        {icon}
+                        {task.title}
+                      </h4>
+                      <button
+                        onClick={() => handleDelete(task.taskId)}
+                        className="text-red-500 hover:text-red-600 transition-colors"
+                        title="Delete Task"
+                      >
+                        <FaTrashAlt size={20} />
+                      </button>
+                    </div>
+                    <p className="text-gray-600 mb-5 leading-relaxed">{task.description}</p>
+                    <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+                      <div className="flex items-center gap-2">
+                        <AiOutlineUser className="text-green-500" />
+                        <span>Assigned to: <span className="font-medium text-gray-700">{task.assignee}</span></span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <AiOutlineUser className="text-purple-500" />
+                        <span>Assigned by: <span className="font-medium text-gray-700">{task.assignedBy}</span></span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <AiOutlineCalendar className="text-yellow-500" />
+                        <span>Due Date: <span className="font-medium text-gray-700">{new Date(task.dueDate).toLocaleDateString()}</span></span>
+                      </div>
+                    </div>
+                    <div className="mt-5 flex justify-between items-center">
+                      <span
+                        className={`px-3 py-1 text-xs font-bold uppercase rounded-full tracking-wide ${
+                          task.priority === "High"
+                            ? "bg-red-100 text-red-600"
+                            : task.priority === "Medium"
+                            ? "bg-yellow-100 text-yellow-600"
+                            : "bg-green-100 text-green-600"
+                        }`}
+                      >
+                        {task.priority}
+                      </span>
+                      {task.category && (
+                        <div className={`flex items-center gap-2 px-3 py-1 text-sm font-semibold rounded-full ${style}`}>
+                          {icon}
+                          {task.category}
+                        </div>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </section>
+
+          
+
         </main>
       </div>
     </PrivateRoute>
