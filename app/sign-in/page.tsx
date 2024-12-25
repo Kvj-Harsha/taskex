@@ -35,7 +35,7 @@ export default function SignIn() {
       <div className="flex flex-grow items-center justify-center px-6 py-12">
         <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
           <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Sign In</h2>
-          <form onSubmit={handleSignIn} className="space-y-4">
+          <form onSubmit={handleSignIn} className="text-black space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email
