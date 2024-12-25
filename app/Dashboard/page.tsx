@@ -219,7 +219,7 @@ export default function Dashboard() {
                   },
                 };
 
-                const { style, icon } = categoryData[task.category] || categoryData.Other;
+                const { style, icon } = categoryData[task.category as keyof typeof categoryData] || categoryData.Other;
 
                 return (
                   <li
@@ -275,8 +275,8 @@ export default function Dashboard() {
                     </div>
                   </li>
                 );
-              })}
-            </ul>
+
+              })}            </ul>
           </section>
 
           
