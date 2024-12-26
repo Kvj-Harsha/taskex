@@ -95,6 +95,8 @@ export default function Dashboard() {
     }
   };
 
+  
+
   const handleLogout = async () => {
     await firebaseAuth.signOut(auth);
     router.push("/sign-in");
@@ -295,6 +297,7 @@ return (
         {/* Task Status Columns */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {["To Do", "In Progress", "Done"].map((status) => (
+            
             <div
               key={status}
               className="bg-white rounded-lg shadow-lg p-6 border border-gray-300"
@@ -329,6 +332,7 @@ return (
                       },
                     };
 
+
                     const { style, icon } =
                       categoryData[task.category as keyof typeof categoryData] ||
                       categoryData.Other;
@@ -350,6 +354,7 @@ return (
                             <FaTrashAlt />
                           </button>
                         </div>
+
                         <p className="text-gray-600 my-4">{task.description}</p>
                         <div
                           className={`inline-block px-4 py-1 text-xs font-medium rounded-full ${{
