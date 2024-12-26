@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { FaTasks } from "react-icons/fa";
@@ -8,15 +8,29 @@ import { HiMenuAlt3 } from "react-icons/hi";
 function Navbar() {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10); // Apply effect if scrolled more than 10px
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
-      className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-screen-xl bg-gradient-to-r from-[#ede8f5] to-[#f9f8fc] shadow-xl backdrop-blur-md rounded-lg px-4 py-3 md:py-4"
+      className={`fixed top-3 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-screen-xl ${
+        isScrolled
+          ? "bg-white/20 backdrop-blur-md shadow-lg"
+          : "bg-white"
+      } rounded-lg px-4 py-3 md:py-4 transition-all duration-300`}
     >
       {/* Side Menu (for mobile) */}
       <div
@@ -47,13 +61,17 @@ function Navbar() {
       <header className="flex justify-between items-center">
         {/* Logo */}
         <motion.div
-          whileHover={{ scale: 1.1 }}
-          className="flex items-center gap-2 text-xl font-semibold text-[#3d52a0] cursor-pointer"
-          onClick={() => router.push("/")}
-        >
-          <FaTasks className="text-[#6366f1]" />
-          TaskEx
-        </motion.div>
+      whileHover={{ scale: 1.1, rotate: 2 }}
+      transition={{ duration: 0.3 }}
+      className="flex items-center gap-3 cursor-pointer text-[#3d52a0] font-semibold text-3xl"
+      onClick={() => router.push("/")}
+    >
+
+      {/* Text with clean modern typography */}
+      <span className="text-[#3d52a0] font-extrabold tracking-tight transform transition-all duration-200 hover:text-[#3d52a0]">
+        TaskEx
+      </span>
+    </motion.div>
 
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-8 text-sm">
@@ -66,7 +84,7 @@ function Navbar() {
             <motion.a
               key={item.name}
               href={item.link}
-              className="text-[#3d52a0] transition-colors hover:text-[#6366f1] dark:hover:text-white"
+              className="text-[#3d52a0] transition-colors hover:text-[#6366f1] dark:hover:text-black"
               whileHover={{ scale: 1.1 }}
             >
               {item.name}
