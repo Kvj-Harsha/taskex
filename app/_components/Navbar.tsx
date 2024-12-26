@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { FaTasks } from "react-icons/fa";
 import { HiMenuAlt3 } from "react-icons/hi";
 
 function Navbar() {
@@ -34,11 +33,11 @@ function Navbar() {
     >
       {/* Side Menu (for mobile) */}
       <div
-        className={`fixed top-0 left-0 w-2/3 h-full bg-[#3d52a0] transition-transform duration-300 ${
+        className={`fixed top-0 left-0 w-2/3 h-full bg-transparent transition-transform duration-300 ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         } z-50`}
       >
-        <div className="flex flex-col items-center mt-20 gap-6">
+        <div className="flex flex-col bg-black lg:bg-transparent md:bg-transparent items-center mt-20 gap-6">
           {[
             { name: "Home", link: "/" },
             { name: "About", link: "/About" },
@@ -61,7 +60,6 @@ function Navbar() {
       <header className="flex justify-between items-center">
         {/* Logo */}
         <motion.div
-      whileHover={{ scale: 1.1, rotate: 2 }}
       transition={{ duration: 0.3 }}
       className="flex items-center gap-3 cursor-pointer text-[#3d52a0] font-semibold text-3xl"
       onClick={() => router.push("/")}

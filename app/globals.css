@@ -6,3 +6,71 @@ body{
     background-color: #3d52a0;
     color: white;
 }
+
+@keyframes fadeInUp {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideUp {
+    0% {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+  
+  .animate-fadeInUp {
+    animation: fadeInUp 1s ease-out forwards;
+  }
+  
+  .animate-slideUp {
+    animation: slideUp 1s ease-out forwards;
+  }
+  
+  .animate-bounce {
+    animation: bounce 1s ease infinite;
+  }
+  @keyframes scrollText {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  .animate-scroll-text {
+    animation: scrollText 10s linear infinite;
+  }
+  
+  .text-gradient {
+    background: linear-gradient(to right, #2563eb, #64748b);
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .text-outline {
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.8);
+  }
+  
+
+  
