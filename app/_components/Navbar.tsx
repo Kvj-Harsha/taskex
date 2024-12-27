@@ -43,6 +43,7 @@ function Navbar() {
             { name: "About", link: "/About" },
             { name: "GitHub", link: "https://github.com/Kvj-Harsha/taskex" },
             { name: "Contact", link: "/Contact" },
+            { name: "db-test", link: "/read" },
           ].map((item) => (
             <motion.a
               key={item.name}
@@ -78,6 +79,7 @@ function Navbar() {
             { name: "About", link: "/About" },
             { name: "GitHub", link: "https://github.com/Kvj-Harsha/taskex" },
             { name: "Contact", link: "/Contact" },
+            { name: "db-test", link: "/read" },
           ].map((item) => (
             <motion.a
               key={item.name}
