@@ -39,7 +39,7 @@ const Hero: React.FC = () => {
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <motion.a
                 className="block w-full max-w-xs rounded border border-transparent bg-[#ede8f5] px-6 py-3 text-sm font-medium text-[#3d52a0] hover:bg-transparent hover:text-[#ede8f5] hover:border-white focus:outline-none focus:ring sm:w-auto"
-                href="/dashboard"
+                href="/Dashboard"
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 whileHover={{ scale: 1.1 }}
@@ -49,7 +49,7 @@ const Hero: React.FC = () => {
               </motion.a>
               <motion.a
                 className="block w-full max-w-xs rounded border border-[#ede8f5] px-6 py-3 text-sm font-medium text-[#ede8f5] hover:bg-[#ede8f5] hover:text-[#3d52a0] focus:outline-none focus:ring sm:w-auto"
-                href="/learn-more"
+                href="/About"
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 whileHover={{ scale: 1.1 }}
