@@ -1,13 +1,15 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { auth, firebaseAuth } from "@/lib/firebase";
+import { auth, firebaseAuth, db } from "@/lib/firebase"; // Import firestore
 import Navbar from "../_components/Navbar";
+import { doc, setDoc } from "firebase/firestore"; // Import Firestore functions
 
 export default function SignUp() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [username, setUsername] = useState<string>(""); // State for username
   const [error, setError] = useState<string>("");
   const router = useRouter();
 
@@ -22,8 +24,17 @@ export default function SignUp() {
 
     try {
       // Create user with email and password
-      await firebaseAuth.createUserWithEmailAndPassword(auth, email, password);
-      router.push("/dashboard"); // Redirect to the protected page after successful sign-up
+      const userCredential = await firebaseAuth.createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // Store user data in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        email,
+        username,
+        createdAt: new Date(),
+      });
+
+      router.push("/Dashboard"); // Redirect to the protected page after successful sign-up
     } catch (err: any) {
       setError(err.message || "Sign-up failed. Please try again.");
     }
@@ -36,6 +47,20 @@ export default function SignUp() {
         <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
           <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Sign Up</h2>
           <form onSubmit={handleSignUp} className="space-y-4">
+            <div>
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                Username
+              </label>
+              <input
+                id="username"
+                type="text"
+                placeholder="Enter your username"
+                className="w-full mt-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email
