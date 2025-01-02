@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "../_components/Navbar"; // Import your Navbar
+
+import Navbar from "../_components/Navbar";
+import PrivateRoute from "../_components/PrivateRoute"; // Import your Navbar
 import { db } from "@/lib/firebase"; // Path to your Firebase setup
 import { collection, onSnapshot, addDoc, deleteDoc, doc } from "firebase/firestore";
 
@@ -89,6 +91,7 @@ const FirebaseRead = () => {
   if (error) return <div className="text-center p-4 text-red-500">Error: {error}</div>;
 
   return (
+      <PrivateRoute>
     <div>
       <Navbar />
       <div className="max-w-6xl mt-28 mx-auto px-4 space-y-6">
@@ -174,6 +177,7 @@ const FirebaseRead = () => {
         </div>
       </div>
     </div>
+    </PrivateRoute>
   );
 };
 
