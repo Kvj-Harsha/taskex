@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import PrivateRoute from "../_components/PrivateRoute";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { FaTasks, FaClipboardList, FaCalendarAlt,
+import { FaTasks,FaEdit, FaClipboardList, FaCalendarAlt,
    FaExclamationCircle, FaUserAlt, 
    FaArrowRight, FaTrashAlt } from 'react-icons/fa';
    import { MdAddTask, MdTaskAlt, MdAssignment } from 'react-icons/md';
@@ -53,7 +53,8 @@ const Dashboard = () => {
   });
   const [showForm, setShowForm] = useState(false);
   const [currentTab, setCurrentTab] = useState("all");
-  const [darkMode, setDarkMode] = useState(false);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
+
 
   // Fetch Tasks by Tab
   useEffect(() => {
@@ -128,16 +129,22 @@ const Dashboard = () => {
   }, []);
 
   // CRUD Operations
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
-      await addDoc(collection(db, "tasks"), form);
-      setShowForm(false);
-      resetForm();
+        if (editingTask) {
+            await updateDoc(doc(db, "tasks", editingTask.taskId), form);
+            setEditingTask(null);
+        } else {
+            await addDoc(collection(db, "tasks"), form);
+        }
+        setShowForm(false);
+        resetForm();
     } catch (err) {
-      console.error("Failed to add task", err);
+        console.error("Failed to save task", err);
     }
-  };
+};
+
 
   const handleDelete = async (taskId: string) => {
     try {
@@ -157,16 +164,18 @@ const Dashboard = () => {
 
   const resetForm = () => {
     setForm({
-      title: "",
-      description: "",
-      assignee: "",
-      status: "To Do",
-      assignedBy: auth.currentUser?.email || "",
-      dueDate: "",
-      priority: "Medium",
-      type: "my-task",
+        title: "",
+        description: "",
+        assignee: "",
+        status: "To Do",
+        assignedBy: auth.currentUser?.email || "",
+        dueDate: "",
+        priority: "Medium",
+        type: "my-task",
     });
-  };
+    setEditingTask(null);
+};
+
 
   const handleLogout = async () => {
     await firebaseAuth.signOut(auth);
@@ -354,6 +363,18 @@ const Dashboard = () => {
                   Move to {status === "To Do" ? "In Progress" : "Done"}
                 </button>
               )}
+              <button
+    onClick={() => {
+        setForm(task);
+        setEditingTask(task);
+        setShowForm(true);
+    }}
+    className="text-green-600 hover:underline flex items-center"
+>
+    <FaEdit className="mr-2" />
+    Edit
+</button>
+
               <button
                 onClick={() => handleDelete(task.taskId)}
                 className="text-red-600 hover:underline flex items-center"
