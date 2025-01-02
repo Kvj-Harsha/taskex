@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import { auth, db } from "@/lib/firebase";
-import { onAuthStateChanged } from "firebase/auth";
-import { collection, getDocs } from "firebase/firestore";
+import { onAuthStateChanged, updateProfile } from "firebase/auth"; // Import updateProfile
+import { collection, getDocs, query, where, doc, updateDoc } from "firebase/firestore";
 
 type User = {
   username: string;
@@ -15,12 +15,48 @@ const UsersList = () => {
 
   useEffect(() => {
     // Listen for authentication state changes
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        setCurrentUser({
-          username: user.displayName || "Unknown User", // Assuming `displayName` is set
-          email: user.email || "No Email",
-        });
+        try {
+          // Query Firestore for the user with the matching email
+          const usersRef = collection(db, "users");
+          const q = query(usersRef, where("email", "==", user.email));
+          const querySnapshot = await getDocs(q);
+
+          if (!querySnapshot.empty) {
+            // Get the first user that matches the email
+            const userDoc = querySnapshot.docs[0];
+            const userData = userDoc.data();
+            const username = userData.username || "Unknown User";
+
+            // Update the displayName in Firebase Authentication
+            if (user.displayName !== username) {
+              await updateProfile(user, {
+                displayName: username, // Update displayName in Firebase Auth
+              });
+              console.log("User's displayName updated:", username);
+            }
+
+            // Update the username in Firestore
+            const userDocRef = doc(db, "users", userDoc.id);
+            await updateDoc(userDocRef, {
+              username: username, // Ensure Firestore username is consistent
+            });
+            console.log("User's username updated in Firestore:", username);
+
+            setCurrentUser({
+              username: username,
+              email: user.email || "No Email",
+            });
+          } else {
+            setCurrentUser({
+              username: "Unknown User", // Default value if no user data found
+              email: user.email || "No Email",
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching user data or updating displayName:", error);
+        }
       } else {
         setCurrentUser(null);
       }
@@ -34,8 +70,8 @@ const UsersList = () => {
         querySnapshot.forEach((doc) => {
           const userData = doc.data();
           users.push({
-            username: userData.username || "No Username", // Ensure the `username` exists
-            email: userData.email || "No Email", // Ensure the `email` exists
+            username: userData.username || "No Username",
+            email: userData.email || "No Email",
           });
         });
         setAllUsers(users);
@@ -46,7 +82,7 @@ const UsersList = () => {
 
     fetchUsers();
 
-    return () => unsubscribe();
+    return () => unsubscribe(); // Cleanup on component unmount
   }, []);
 
   return (
@@ -91,4 +127,3 @@ const UsersList = () => {
 };
 
 export default UsersList;
-  
