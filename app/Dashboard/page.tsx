@@ -4,9 +4,14 @@ import { useState, useEffect } from "react";
 import { auth, firebaseAuth, db } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import PrivateRoute from "../_components/PrivateRoute";
-import { FaTrashAlt } from "react-icons/fa";
-import { AiOutlineCalendar, AiOutlineUser } from "react-icons/ai";
-import { MdAddTask, MdTaskAlt, MdAssignment } from "react-icons/md";
+import { motion, AnimatePresence } from "framer-motion";
+
+import { FaTasks, FaClipboardList, FaCalendarAlt,
+   FaExclamationCircle, FaUserAlt, 
+   FaArrowRight, FaTrashAlt } from 'react-icons/fa';
+   import { MdAddTask, MdTaskAlt, MdAssignment } from 'react-icons/md';
+import { AiOutlineUser } from 'react-icons/ai'
+
 import {
   collection,
   addDoc,
@@ -48,6 +53,7 @@ const Dashboard = () => {
   });
   const [showForm, setShowForm] = useState(false);
   const [currentTab, setCurrentTab] = useState("all");
+  const [darkMode, setDarkMode] = useState(false);
 
   // Fetch Tasks by Tab
   useEffect(() => {
@@ -166,6 +172,7 @@ const Dashboard = () => {
     await firebaseAuth.signOut(auth);
     router.push("/sign-in");
   };
+  
 
   // Helper Functions
   const getUserDisplayName = (email: string) => {
@@ -174,182 +181,297 @@ const Dashboard = () => {
   };
   // UI Components
   return (
+
     <PrivateRoute>
-      <div className="flex text-black min-h-screen">
+      <div className="flex text-black dark:text-white min-h-screen bg-[#3d52a0] ">
+
         {/* Sidebar */}
-        <aside className="w-64 bg-gray-800 text-white flex flex-col items-center py-6">
-          <h2 className="text-2xl font-bold mb-4">Welcome, {userName}</h2>
-          <button
-            onClick={() => setShowForm(true)}
-            className="flex items-center bg-blue-600 px-4 py-2 rounded mb-4 hover:bg-blue-500"
-          >
-            <MdAddTask className="mr-2" /> Create Task
-          </button>
-          <nav className="flex flex-col gap-4">
-            <button
-              onClick={() => setCurrentTab("all")}
-              className={currentTab === "all" ? "text-yellow-300" : "hover:text-yellow-300"}
+
+        <motion.aside
+          initial={{ x: -200, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -200, opacity: 0 }}
+          transition={{ duration: 0.4 }}
+          className="w-[26vw] bg-white text-gray-800 flex flex-col items-center justify-between py-6 border-r border-gray-200 shadow-lg dark:bg-gray-900 dark:text-white"
+        >
+          <div className="flex flex-col items-center justify-center w-full">
+            <motion.h2
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.3 }}
+              className="text-2xl font-semibold mb-4 text-center"
             >
-              <MdTaskAlt className="inline-block mr-2" /> All Tasks
-            </button>
-            <button
-              onClick={() => setCurrentTab("my")}
-              className={currentTab === "my" ? "text-yellow-300" : "hover:text-yellow-300"}
+              Welcome!
+            </motion.h2>
+
+            <motion.button
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.3 }}
+              onClick={() => setShowForm(true)}
+              className="flex items-center bg-blue-600 text-white px-4 py-2 rounded mb-6 hover:bg-blue-500 transition-colors duration-300 dark:bg-blue-700 dark:hover:bg-blue-600"
             >
-              <AiOutlineUser className="inline-block mr-2" /> My Tasks
-            </button>
-            <button
-              onClick={() => setCurrentTab("assigned")}
-              className={currentTab === "assigned" ? "text-yellow-300" : "hover:text-yellow-300"}
+              <MdAddTask className="mr-2" /> Create Task
+            </motion.button>
+          
+            <motion.nav
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.2,
+                  },
+                },
+              }}
+              className="flex flex-col items-center gap-6 w-full"
             >
-              <MdAssignment className="inline-block mr-2" /> Assigned Tasks
-            </button>
-          </nav>
-        </aside>
+              {[ 
+                { label: "All Tasks", icon: <MdTaskAlt />, tab: "all" },
+                { label: "My Tasks", icon: <AiOutlineUser />, tab: "my" },
+                { label: "Assigned Tasks", icon: <MdAssignment />, tab: "assigned" },
+              ].map(({ label, icon, tab }, index) => (
+                <motion.button
+                  key={index}
+                  variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0 } }}
+                  onClick={() => setCurrentTab(tab)}
+                  className={`flex items-center gap-3 text-lg font-medium ${currentTab === tab ? "text-blue-600" : "hover:text-blue-500"} transition-colors duration-300`}
+                >
+                  <span className="text-xl">{icon}</span>
+                  <span>{label}</span>
+                </motion.button>
+              ))}
+            </motion.nav>
+          </div>
+
+          <div className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
+            <p>Developed by <span className="font-semibold text-blue-600"><a href="https://github.com/kvj-harsha">callmekvj</a></span></p>
+          </div>
+        </motion.aside>
+        
 
         {/* Main Content */}
-        <main className="flex-grow p-6 bg-gray-100">
-          <header className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold">Task Dashboard</h1>
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 px-4 py-2 rounded hover:bg-red-600"
-            >
-              Logout
-            </button>
-          </header>
+        <main className="flex-grow p-6  bg-[#3d52a0] ">
+
+ 
+        <header className="flex justify-between items-center mb-8 bg-white p-5 rounded-lg shadow-xl">
+  <motion.div
+    initial={{ opacity: 0, x: -50 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.5 }}
+    className="flex items-center space-x-3"
+  >
+    <FaTasks className="text-blue-900 text-4xl transform transition-transform duration-300 hover:scale-105" />
+    <motion.h1
+      className="text-3xl font-bold text-blue-900 tracking-tight font-sans transform transition-all duration-300 hover:text-blue-300"
+    >
+      TaskEx Dashboard
+    </motion.h1>
+  </motion.div>
+
+  <motion.button
+    onClick={handleLogout}
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.5, delay: 0.2 }}
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
+    className="bg-red-500 px-4 py-2 rounded-md text-white font-semibold hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700"
+  >
+    Logout
+  </motion.button>
+</header>
+
+
 
           {/* Task Columns */}
-          <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {["To Do", "In Progress", "Done"].map((status) => (
-              <div key={status} className="bg-white p-4 rounded shadow">
-                <h2 className="text-xl font-bold mb-4">{status}</h2>
-                {tasks
-                  .filter((task: { assignee: string; assignedBy: string }) => {
-                    // Only show tasks that the current user is either the assignee or the assigned-by user
-                    return (
-                      task.assignee === auth.currentUser?.email ||
-                      task.assignedBy === auth.currentUser?.email
-                    );
-                  })
-                  .filter((task: { status: string }) => task.status === status)
-                  .map((task: any) => (
-                    <div key={task.taskId} className="bg-gray-200 p-4 rounded shadow mb-4">
-                      <h3 className="font-bold text-lg">{task.title}</h3>
-                      <p>{task.description}</p>
-                      <p className="text-sm text-gray-600">Due: {task.dueDate}</p>
-                      <p className="text-sm text-gray-600">Priority: {task.priority}</p>
-                      <p className="text-sm text-gray-600">Assigned to: {getUserDisplayName(task.assignee)}</p>
-                      <div className="flex gap-2 mt-2">
-                        {status !== "Done" && (
-                          <button
-                            onClick={() =>
-                              handleStageChange(task.taskId, status === "To Do" ? "In Progress" : "Done")
-                            }
-                            className="text-blue-500 hover:underline"
-                          >
-                            Move to {status === "To Do" ? "In Progress" : "Done"}
-                          </button>
-                        )}
-                        <button
-                          onClick={() => handleDelete(task.taskId)}
-                          className="text-red-500 hover:underline"
-                        >
-                          <FaTrashAlt className="inline-block mr-1" /> Delete
-                        </button>
-                      </div>
-                    </div>
-                  ))}              </div>            ))}
-          </section>
+          <section className="grid grid-cols-1 md:grid-cols-3 gap-8">
+  {["To Do", "In Progress", "Done"].map((status, index) => (
+    <motion.div
+      key={status}
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.2 }}
+      className="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300"
+    >
+      <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+        <FaTasks className="mr-3 text-gray-600" />
+        {status}
+      </h2>
+      
+      {tasks
+        .filter((task: { assignee: string; assignedBy: string }) => {
+          return (
+            task.assignee === auth.currentUser?.email ||
+            task.assignedBy === auth.currentUser?.email
+          );
+        })
+        .filter((task: { status: string }) => task.status === status)
+        .map((task: any) => (
+          <motion.div
+            key={task.taskId}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white p-5 rounded-lg shadow hover:shadow-lg mb-6 transition-shadow duration-300"
+          >
+            <h3 className="font-semibold text-lg text-gray-900 mb-2 flex items-center">
+              <FaClipboardList className="mr-3 text-gray-600" />
+              {task.title}
+            </h3>
+            
+            <p className="text-gray-700 text-sm">{task.description}</p>
+            
+            <div className="mt-4">
+              <p className="text-sm text-gray-600 flex items-center">
+                <FaCalendarAlt className="mr-2 text-gray-500" />
+                Due: {task.dueDate}
+              </p>
+              <p className="text-sm text-gray-600 flex items-center">
+                <FaExclamationCircle className="mr-2 text-gray-500" />
+                Priority: {task.priority}
+              </p>
+              <p className="text-sm text-gray-600 flex items-center">
+                <FaUserAlt className="mr-2 text-gray-500" />
+                Assigned to: {getUserDisplayName(task.assignee)}
+              </p>
+            </div>
+
+            <div className="flex gap-4 mt-4">
+              {status !== "Done" && (
+                <button
+                  onClick={() =>
+                    handleStageChange(
+                      task.taskId,
+                      status === "To Do" ? "In Progress" : "Done"
+                    )
+                  }
+                  className="text-blue-600 hover:underline flex items-center"
+                >
+                  <FaArrowRight className="mr-2" />
+                  Move to {status === "To Do" ? "In Progress" : "Done"}
+                </button>
+              )}
+              <button
+                onClick={() => handleDelete(task.taskId)}
+                className="text-red-600 hover:underline flex items-center"
+              >
+                <FaTrashAlt className="mr-2" />
+                Delete
+              </button>
+            </div>
+          </motion.div>
+        ))}
+    </motion.div>
+  ))}
+</section>
+
+
 
           {/* Task Creation Form */}
-          {showForm && (
-            <form
-              onSubmit={handleSubmit}
-              className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
-            >
-              <div className="bg-white p-6 rounded shadow w-full max-w-md">
-                <h2 className="text-xl font-bold mb-4">Create Task</h2>
-                <div className="mb-4">
-                  <label className="block mb-2">Title</label>
-                  <input
-                    type="text"
-                    value={form.title}
-                    onChange={(e) => setForm({ ...form, title: e.target.value })}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block mb-2">Description</label>
-                  <textarea
-                    value={form.description}
-                    onChange={(e) => setForm({ ...form, description: e.target.value })}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block mb-2">Assignee</label>
-                  <select
-                    value={form.assignee}
-                    onChange={(e) => setForm({ ...form, assignee: e.target.value })}
-                    className="w-full border p-2 rounded"
-                  >
-                    <option value="">Select Assignee</option>
-                    {users.map((user: { id: string; email: string; name?: string }) => (
-                      <option key={user.id} value={user.email}>
-                        {user.name || user.email}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <label className="block mb-2">Due Date</label>
-                  <input
-                    type="date"
-                    value={form.dueDate}
-                    onChange={(e) => setForm({ ...form, dueDate: e.target.value })}
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block mb-2">Priority</label>
-                  <select
-                    value={form.priority}
-                    onChange={(e) => setForm({ ...form, priority: e.target.value })}
-                    className="w-full border p-2 rounded"
-                  >
-                    <option value="Low">Low</option>
-                    <option value="Medium">Medium</option>
-                    <option value="High">High</option>
-                  </select>
-                </div>
-                <div className="mb-4">
-                  <label className="block mb-2">Task Type</label>
-                  <select
-                    value={form.type}
-                    onChange={(e) => setForm({ ...form, type: e.target.value })}
-                    className="w-full border p-2 rounded"
-                  >
-                    <option value="my-task">My Task</option>
-                    <option value="assigned-task">Assigned Task</option>
-                  </select>
-                </div>
-                <div className="flex gap-4">
-                  <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-                    Add Task
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowForm(false)}
-                    className="bg-gray-300 px-4 py-2 rounded"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-            </form>
-          )}
+          <AnimatePresence>
+            {showForm && (
+              <motion.form
+                onSubmit={handleSubmit}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.3 }}
+                className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+              >
+                <motion.div
+                  initial={{ y: 50, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -50, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-white p-6 rounded shadow w-full max-w-md dark:bg-gray-700"
+                >
+                  <h2 className="text-xl font-bold mb-4">Create Task</h2>
+                  <div className="mb-4">
+                    <label className="block mb-2">Title</label>
+                    <input
+                      type="text"
+                      value={form.title}
+                      onChange={(e) => setForm({ ...form, title: e.target.value })}
+                      className="w-full border p-2 rounded dark:bg-gray-600 dark:text-white dark:border-gray-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="block mb-2">Description</label>
+                    <textarea
+                      value={form.description}
+                      onChange={(e) => setForm({ ...form, description: e.target.value })}
+                      className="w-full border p-2 rounded dark:bg-gray-600 dark:text-white dark:border-gray-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="block mb-2">Assignee</label>
+                    <select
+                      value={form.assignee}
+                      onChange={(e) => setForm({ ...form, assignee: e.target.value })}
+                      className="w-full border p-2 rounded dark:bg-gray-600 dark:text-white dark:border-gray-500"
+                    >
+                      <option value="">Select Assignee</option>
+                      {users.map((user: { id: string; email: string; name?: string }) => (
+                        <option key={user.id} value={user.email}>
+                          {user.name || user.email}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="mb-4">
+                    <label className="block mb-2">Due Date</label>
+                    <input
+                      type="date"
+                      value={form.dueDate}
+                      onChange={(e) => setForm({ ...form, dueDate: e.target.value })}
+                      className="w-full border p-2 rounded dark:bg-gray-600 dark:text-white dark:border-gray-500"
+                    />
+                  </div>
+                  <div className="mb-4">
+                    <label className="block mb-2">Priority</label>
+                    <select
+                      value={form.priority}
+                      onChange={(e) => setForm({ ...form, priority: e.target.value })}
+                      className="w-full border p-2 rounded dark:bg-gray-600 dark:text-white dark:border-gray-500"
+                    >
+                      <option value="Low">Low</option>
+                      <option value="Medium">Medium</option>
+                      <option value="High">High</option>
+                    </select>
+                  </div>
+                  <div className="mb-4">
+                    <label className="block mb-2">Task Type</label>
+                    <select
+                      value={form.type}
+                      onChange={(e) => setForm({ ...form, type: e.target.value })}
+                      className="w-full border p-2 rounded dark:bg-gray-600 dark:text-white dark:border-gray-500"
+                    >
+                      <option value="my-task">My Task</option>
+                      <option value="assigned-task">Assigned Task</option>
+                    </select>
+                  </div>
+                  <div className="flex gap-4">
+                    <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded dark:bg-blue-500">
+                      Add Task
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowForm(false)}
+                      className="bg-gray-300 px-4 py-2 rounded dark:bg-gray-600 dark:text-white"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </motion.div>
+              </motion.form>
+            )}
+          </AnimatePresence>
         </main>
+
+
       </div>
     </PrivateRoute>
   );
