@@ -34,7 +34,6 @@ If you like Taskex, please consider giving it a star!
 This project is licensed under the **MIT License**.  
 
 ## 📸 Screenshots
-Here are 5 ss of Taskex:
 
 1. ![Screenshot 1](public/s1.png)
 2. ![Screenshot 2](public/s2.png)
