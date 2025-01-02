@@ -18,13 +18,24 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
-import { User } from "firebase/auth";
+
+interface Task {
+  taskId: string;
+  title: string;
+  description: string;
+  assignee: string;
+  status: string;
+  assignedBy: string;
+  dueDate: string;
+  priority: string;
+  type: string;
+}
 
 const Dashboard = () => {
   const router = useRouter();
-  const [tasks, setTasks] = useState([]);
-  const [userName, setUserName] = useState("User");
-  const [users, setUsers] = useState([]);
+  const [tasks, setTasks] = useState<Task[]>([]); // Specify that tasks is an array of Task objects
+  const [userName, setUserName] = useState<string>("User");
+  const [users, setUsers] = useState<any[]>([]); // Update this as needed based on your user data
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -60,7 +71,17 @@ const Dashboard = () => {
       }
 
       const unsubscribe = onSnapshot(q, (snapshot) => {
-        const fetchedTasks = snapshot.docs.map((doc) => ({ taskId: doc.id, ...doc.data() }));
+        const fetchedTasks = snapshot.docs.map((doc) => ({
+          taskId: doc.id,
+          title: doc.data().title,
+          description: doc.data().description,
+          assignee: doc.data().assignee,
+          status: doc.data().status,
+          assignedBy: doc.data().assignedBy,
+          dueDate: doc.data().dueDate,
+          priority: doc.data().priority,
+          type: doc.data().type,
+        } as Task));
 
         setTasks(fetchedTasks);
       });
