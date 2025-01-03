@@ -1,0 +1,6 @@
+version: 2
+updates:
+  - package-ecosystem: "npm" # For Node.js/JavaScript projects
+    directory: "/" # Root directory of the repository
+    schedule:
+      interval: "weekly" # Check for updates weekly
