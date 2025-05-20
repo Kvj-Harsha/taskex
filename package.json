@@ -19,7 +19,7 @@
     "@mui/material": "^6.3.1",
     "date-fns": "^4.1.0",
     "firebase": "^11.1.0",
-    "firebase-admin": "^13.2.0",
+    "firebase-admin": "^13.4.0",
     "framer-motion": "^12.4.3",
     "mongodb": "^6.15.0",
     "mongoose": "^8.13.2",
