@@ -6,6 +6,9 @@ Taskex is a task management application built with **Next.js** and **TypeScript*
 ## 🚀 Live Demo  
 Check out the live version of Taskex here: [taskex.vercel.app](https://taskex.vercel.app)  
 
+## Workflow
+![diagram (1)](https://github.com/user-attachments/assets/74d2a2dd-7749-457a-b16c-b4a01def4a86)
+
 ## 🛠️ Current Status  
 This project is currently in the **implementation stage**. Features are being developed, and the application is not yet production-ready.  
 
